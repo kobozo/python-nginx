@@ -1,5 +1,5 @@
 
-# project-name Changelog
+# kobozo-nginx Changelog
 
 All notable changes to this project will be documented in this file.
 
