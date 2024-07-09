@@ -144,3 +144,9 @@ tests/reports
 
 # Ruff
 .ruff_cache
+
+# MacOS
+__MACOSX/
+.DS_Store
+.AppleDouble
+.LSOverride%
