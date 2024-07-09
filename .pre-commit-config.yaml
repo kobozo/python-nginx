@@ -1,0 +1,34 @@
+default_language_version:
+    python: python3.11
+
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 'v4.6.0'
+    hooks:
+    -   id: check-json
+    -   id: check-yaml
+    -   id: check-added-large-files
+
+-   repo: local
+    hooks:
+    -   id: gitleaks
+        name: run gitleaks #added because original gitleaks gives SSL Error
+        language: system
+        pass_filenames: false
+        entry: poetry run gitleaks detect .
+    -   id: ruff
+        name: run ruff tests
+        language: system
+        pass_filenames: false
+        entry: poetry run ruff check . --fix
+    -   id: unittest
+        name: run unit tests
+        language: system
+        pass_filenames: false
+        entry: poetry run tox
+
+
+# -   repo: https://github.com/gitleaks/gitleaks
+#     rev: v8.16.1
+#     hooks:
+#     -   id: gitleaks
