@@ -21,8 +21,8 @@ packages = [
     { include = "project_name", from = "src" },
 ]
 
-authors = ["Lari Liuhamo <lari.liuhamo+pypi@gmail.com>",]
-maintainers = ["Lari Liuhamo <lari.liuhamo+pypi@gmail.com>",]
+authors = ["Yannick De Backer <yannick@kobozo.eu>",]
+maintainers = ["Yannick De Backer <yannick@kobozo.eu>",]
 
 include = ["CHANGELOG.md", "LICENSE", "py.typed",]
 license = "MIT"
