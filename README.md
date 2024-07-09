@@ -24,13 +24,7 @@ Follow these steps to set up your project:
 python update-project.py <new-text> '<your-name>' <your-email>
 ```
 
-example:
-
-```sh
-python update-project.py new-project 'My Name' myemail@gmail.com
-```
-
-This will update the project and remove the file update-project.py 
+This will update the project and remove the file `update-project.py`
 
 ### 3. Install Poetry
 
@@ -74,18 +68,13 @@ The default Python version is set to 3.11 in the pre-commit configuration. If yo
 
 The pre-commit hooks configured in this template include:
 
-- **[Black](https://github.com/psf/black)** for code formatting.
-- **[Pydocstyle](https://github.com/PyCQA/pydocstyle)** for enforcing docstring conventions.
-- **[Pycln](https://github.com/hadialqattan/pycln)** for removing unused imports.
-- **[Trailing Whitespace](https://github.com/pre-commit/pre-commit-hooks#trailing-whitespace)** to check for and remove trailing whitespace.
-- **[Check JSON](https://github.com/pre-commit/pre-commit-hooks#check-json)** to validate JSON files.
-- **[Check YAML](https://github.com/pre-commit/pre-commit-hooks#check-yaml)** to validate YAML files.
-- **[Check Added Large Files](https://github.com/pre-commit/pre-commit-hooks#check-added-large-files)** to ensure large files are not committed.
-- **[Mypy](https://github.com/pre-commit/mirrors-mypy)** for type checking.
-- **[Gitleaks](https://github.com/zricethezav/gitleaks)** for detecting secrets.
-- **Unit Tests** to run tests using pytest.
+1. **Pre-commit Hooks Repository**:
+    - A set of pre-commit hooks for common tasks like checking JSON and YAML files, and ensuring large files are not committed.
 
-You can customize these hooks by editing the `.pre-commit-config.yaml` file.
+2. **Local Hooks**:
+    - **Gitleaks**: Runs Gitleaks to detect any secrets in the codebase, with a workaround for an SSL error in the original Gitleaks hook.
+    - **Ruff**: Executes Ruff to perform linting and automatically fix issues in the codebase. Ruff is configured to enforce a wide range of linting rules covering annotations, unused arguments, bugbear issues, error messages, import conventions, logging format, PEP-8 naming, code simplification, and more. Specific rules are selected to ensure high code quality and maintainability.
+    - **Unit Tests**: Runs unit tests using Tox to ensure code changes do not break existing functionality. Tox is configured to run tests across multiple Python versions and generates coverage reports to help maintain code reliability and quality.
 
 ### Manually Run Pre-commit Hooks
 
@@ -110,7 +99,7 @@ This command is useful when you want to apply the hooks to the entire codebase, 
 To run unit tests:
 
 ```sh
-poetry run pytest
+poetry run tox
 ```
 
 ## Contributing
@@ -119,4 +108,4 @@ Feel free to open issues or submit pull requests if you have suggestions for imp
 
 ## License
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
