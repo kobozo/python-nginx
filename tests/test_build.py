@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 import os
 
 import kobozo_crossplane as crossplane
+
 from . import compare_parsed_and_built
 
 
@@ -13,9 +13,9 @@ def test_build_nested_and_multiple_args():
             "block": [
                 {
                     "directive": "worker_connections",
-                    "args": ["1024"]
-                }
-            ]
+                    "args": ["1024"],
+                },
+            ],
         },
         {
             "directive": "http",
@@ -27,11 +27,11 @@ def test_build_nested_and_multiple_args():
                     "block": [
                         {
                             "directive": "listen",
-                            "args": ["127.0.0.1:8080"]
+                            "args": ["127.0.0.1:8080"],
                         },
                         {
                             "directive": "server_name",
-                            "args": ["default_server"]
+                            "args": ["default_server"],
                         },
                         {
                             "directive": "location",
@@ -39,14 +39,14 @@ def test_build_nested_and_multiple_args():
                             "block": [
                                 {
                                     "directive": "return",
-                                    "args": ["200", "foo bar baz"]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
+                                    "args": ["200", "foo bar baz"],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
     ]
     built = crossplane.build(payload, indent=4, tabs=False)
     assert built == '\n'.join([
@@ -61,7 +61,7 @@ def test_build_nested_and_multiple_args():
         "            return 200 'foo bar baz';",
         '        }',
         '    }',
-        '}'
+        '}',
     ])
 
 
@@ -75,15 +75,15 @@ def test_build_with_comments():
                 {
                     "directive": "worker_connections",
                     "line": 2,
-                    "args": ["1024"]
-                }
-            ]
+                    "args": ["1024"],
+                },
+            ],
         },
         {
             "directive": "#",
             "line": 4,
             "args": [],
-            "comment": "comment"
+            "comment": "comment",
         },
         {
             "directive": "http",
@@ -98,18 +98,18 @@ def test_build_with_comments():
                         {
                             "directive": "listen",
                             "line": 7,
-                            "args": ["127.0.0.1:8080"]
+                            "args": ["127.0.0.1:8080"],
                         },
                         {
                             "directive": "#",
                             "line": 7,
                             "args": [],
-                            "comment": "listen"
+                            "comment": "listen",
                         },
                         {
                             "directive": "server_name",
                             "line": 8,
-                            "args": ["default_server"]
+                            "args": ["default_server"],
                         },
                         {
                             "directive": "location",
@@ -120,31 +120,31 @@ def test_build_with_comments():
                                     "directive": "#",
                                     "line": 9,
                                     "args": [],
-                                    "comment": "# this is brace"
+                                    "comment": "# this is brace",
                                 },
                                 {
                                     "directive": "#",
                                     "line": 10,
                                     "args": [],
-                                    "comment": " location /"
+                                    "comment": " location /",
                                 },
                                 {
                                     "directive": "#",
                                     "line": 11,
                                     "args": [],
-                                    "comment": " is here"
+                                    "comment": " is here",
                                 },
                                 {
                                     "directive": "return",
                                     "line": 12,
-                                    "args": ["200", "foo bar baz"]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
+                                    "args": ["200", "foo bar baz"],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
     ]
     built = crossplane.build(payload, indent=4, tabs=False)
     assert built == '\n'.join([
@@ -162,7 +162,7 @@ def test_build_with_comments():
         "            return 200 'foo bar baz';",
         '        }',
         '    }',
-        '}'
+        '}',
     ])
 
 
@@ -172,13 +172,13 @@ def test_build_starts_with_comments():
             "directive": "#",
             "line": 1,
             "args": [],
-            "comment": " foo"
+            "comment": " foo",
         },
         {
             "directive": "user",
             "line": 5,
-            "args": ["root"]
-        }
+            "args": ["root"],
+        },
     ]
     built = crossplane.build(payload, indent=4, tabs=False)
     assert built == '# foo\nuser root;'
@@ -190,10 +190,10 @@ def test_build_with_quoted_unicode():
             "directive": "env",
             "line": 1,
             "args": ["русский текст"],
-        }
+        },
     ]
     built = crossplane.build(payload, indent=4, tabs=False)
-    assert built == u"env 'русский текст';"
+    assert built == "env 'русский текст';"
 
 
 def test_build_multiple_comments_on_one_line():
@@ -202,25 +202,25 @@ def test_build_multiple_comments_on_one_line():
             "directive": "#",
             "line": 1,
             "args": [],
-            "comment": "comment1"
+            "comment": "comment1",
         },
         {
             "directive": "user",
             "line": 2,
-            "args": ["root"]
+            "args": ["root"],
         },
         {
             "directive": "#",
             "line": 2,
             "args": [],
-            "comment": "comment2"
+            "comment": "comment2",
         },
         {
             "directive": "#",
             "line": 2,
             "args": [],
-            "comment": "comment3"
-        }
+            "comment": "comment3",
+        },
     ]
     built = crossplane.build(payload, indent=4, tabs=False)
     assert built == '#comment1\nuser root; #comment2 #comment3'
@@ -238,10 +238,10 @@ def test_build_files_with_missing_status_and_errors(tmpdir):
                         "directive": "user",
                         "line": 1,
                         "args": ["nginx"],
-                    }
-                ]
-            }
-        ]
+                    },
+                ],
+            },
+        ],
     }
     crossplane.nginx_dumper.build_files(payload, dirname=tmpdir.strpath)
     built_files = tmpdir.listdir()
@@ -264,17 +264,17 @@ def test_build_files_with_unicode(tmpdir):
                     {
                         "directive": "user",
                         "line": 1,
-                        "args": [u"測試"],
-                    }
-                ]
-            }
-        ]
+                        "args": ["測試"],
+                    },
+                ],
+            },
+        ],
     }
     crossplane.nginx_dumper.build_files(payload, dirname=tmpdir.strpath)
     built_files = tmpdir.listdir()
     assert len(built_files) == 1
     assert built_files[0].strpath == os.path.join(tmpdir.strpath, 'nginx.conf')
-    assert built_files[0].read_text('utf-8') == u'user 測試;\n'
+    assert built_files[0].read_text('utf-8') == 'user 測試;\n'
 
 
 def test_compare_parsed_and_built_simple(tmpdir):

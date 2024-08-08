@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
 import os
 
 import kobozo_crossplane as crossplane
-from .. import compare_parsed_and_built, here as tests_dir
+
+from .. import compare_parsed_and_built
+from .. import here as tests_dir
 
 
 def test_lex_lua_block_simple():
@@ -67,7 +68,7 @@ def test_lex_lua_block_simple():
         ('\n            print("I need no extra escaping here, for example: \\r\\nblah")\n        ', 38),
         (';', 38),
         ('}', 39),
-        ('}', 40)
+        ('}', 40),
     ]
 
 
@@ -96,7 +97,7 @@ def test_lex_lua_block_larger():
             '\n            ngx.say("no body found")'
             '\n        end'
             '\n    ',
-            18
+            18,
         ),
         (';', 18),
         ('access_by_lua_block', 19),
@@ -115,10 +116,10 @@ def test_lex_lua_block_larger():
             '\n'
             '\n        -- tests passed'
             '\n    ',
-            33
+            33,
         ),
         (';', 33),
-        ('}', 34)
+        ('}', 34),
     ]
 
 
@@ -148,7 +149,7 @@ def test_lex_lua_block_tricky():
             '\n            ngx.var.diff = a - b;  -- write to $diff directly'
             '\n            return a + b;          -- return the $sum value normally'
             '\n        ',
-            11
+            11,
         ),
         (';', 11),
         ('rewrite_by_lua_block', 12),
@@ -158,7 +159,7 @@ def test_lex_lua_block_tricky():
             '\n            a = { 1, 2, 3 }'
             '\n            btn = iup.button({title="ok"})'
             '\n        ',
-            16
+            16,
         ),
         (';', 16),
         ('}', 17),
@@ -167,7 +168,7 @@ def test_lex_lua_block_tricky():
         ('{', 18),
         ('# stuff', 19),
         ('}', 20),
-        ('}', 21)
+        ('}', 21),
     ]
 
 
@@ -191,22 +192,22 @@ def test_parse_lua_block_simple():
                             {
                                 'line': 2,
                                 'args': ['\n        print("Lua block code with curly brace str {")\n    '],
-                                'directive': 'init_by_lua_block'
+                                'directive': 'init_by_lua_block',
                             },
                             {
                                 'line': 5,
                                 'args': ['\n        print("Work that every worker")\n    '],
-                                'directive': 'init_worker_by_lua_block'
+                                'directive': 'init_worker_by_lua_block',
                             },
                             {
                                 'line': 8,
                                 'args': ['\n        local data, eof = ngx.arg[1], ngx.arg[2]\n    '],
-                                'directive': 'body_filter_by_lua_block'
+                                'directive': 'body_filter_by_lua_block',
                             },
                             {
                                 'line': 11,
                                 'args': ['\n        ngx.header["content-length"] = nil\n    '],
-                                'directive': 'header_filter_by_lua_block'
+                                'directive': 'header_filter_by_lua_block',
                             },
                             {
                                 'line': 14,
@@ -215,7 +216,7 @@ def test_parse_lua_block_simple():
                                     {
                                         'line': 15,
                                         'args': ['127.0.0.1:8080'],
-                                        'directive': 'listen'
+                                        'directive': 'listen',
                                     },
                                     {
                                         'line': 16,
@@ -225,25 +226,25 @@ def test_parse_lua_block_simple():
                                                 'line': 17,
                                                 'args': [
                                                     '\n                ngx.say("I need no extra escaping here, for example: \\r\\nblah")'
-                                                    '\n            '
+                                                    '\n            ',
                                                 ],
-                                                'directive': 'content_by_lua_block'
+                                                'directive': 'content_by_lua_block',
                                             },
                                             {
                                                 'line': 20,
                                                 'args': ['200', 'foo bar baz'],
-                                                'directive': 'return'
-                                            }
+                                                'directive': 'return',
+                                            },
                                         ],
-                                        'directive': 'location'
+                                        'directive': 'location',
                                     },
                                     {
                                         'line': 22,
                                         'args': [
                                             '\n            print("About to initiate a new SSL handshake!")'
-                                            '\n        '
+                                            '\n        ',
                                         ],
-                                        'directive': 'ssl_certificate_by_lua_block'
+                                        'directive': 'ssl_certificate_by_lua_block',
                                     },
                                     {
                                         'line': 25,
@@ -252,18 +253,18 @@ def test_parse_lua_block_simple():
                                             {
                                                 'line': 26,
                                                 'args': ['100k'],
-                                                'directive': 'client_max_body_size'
+                                                'directive': 'client_max_body_size',
                                             },
                                             {
                                                 'line': 27,
                                                 'args': ['100k'],
-                                                'directive': 'client_body_buffer_size'
-                                            }
+                                                'directive': 'client_body_buffer_size',
+                                            },
                                         ],
-                                        'directive': 'location'
-                                    }
+                                        'directive': 'location',
+                                    },
                                 ],
-                                'directive': 'server'
+                                'directive': 'server',
                             },
                             {
                                 'line': 31,
@@ -272,33 +273,33 @@ def test_parse_lua_block_simple():
                                     {
                                         'line': 32,
                                         'args': ['127.0.0.1'],
-                                        'directive': 'server'
+                                        'directive': 'server',
                                     },
                                     {
                                         'line': 33,
                                         'args': [
                                             '\n            -- use Lua that\'ll do something interesting here with external bracket for testing {'
-                                            '\n        '
+                                            '\n        ',
                                         ],
-                                        'directive': 'balancer_by_lua_block'
+                                        'directive': 'balancer_by_lua_block',
                                     },
                                     {
                                         'line': 36,
                                         'args': [
                                             '\n            print("I need no extra escaping here, for example: \\r\\nblah")'
-                                            '\n        '
+                                            '\n        ',
                                         ],
-                                        'directive': 'log_by_lua_block'
-                                    }
+                                        'directive': 'log_by_lua_block',
+                                    },
                                 ],
-                                'directive': 'upstream'
-                            }
+                                'directive': 'upstream',
+                            },
                         ],
-                        'directive': 'http'
-                    }
-                ]
-            }
-        ]
+                        'directive': 'http',
+                    },
+                ],
+            },
+        ],
     }
 
 
@@ -326,18 +327,18 @@ def test_parse_lua_block_tricky():
                                     {
                                         'line': 3,
                                         'args': ['127.0.0.1:8080'],
-                                        'directive': 'listen'
+                                        'directive': 'listen',
                                     },
                                     {
                                         'line': 4,
                                         'args': ['content_by_lua_block'],
-                                        'directive': 'server_name'
+                                        'directive': 'server_name',
                                     },
                                     {
-                                        'comment': u" make sure this doesn't trip up lexers",
+                                        'comment': " make sure this doesn't trip up lexers",
                                         'line': 4,
                                         'args': [],
-                                        'directive': '#'
+                                        'directive': '#',
                                     },
                                     {
                                         'line': 5,
@@ -349,9 +350,9 @@ def test_parse_lua_block_tricky():
                                             '\n'
                                             '\n            ngx.var.diff = a - b;  -- write to $diff directly'
                                             '\n            return a + b;          -- return the $sum value normally'
-                                            '\n        '
+                                            '\n        ',
                                         ],
-                                        'directive': 'set_by_lua_block'
+                                        'directive': 'set_by_lua_block',
                                     },
                                     {
                                         'line': 12,
@@ -360,12 +361,12 @@ def test_parse_lua_block_tricky():
                                             '\n            do_something("hello, world!\\nhiya\\n")'
                                             '\n            a = { 1, 2, 3 }'
                                             '\n            btn = iup.button({title="ok"})'
-                                            '\n        '
+                                            '\n        ',
                                         ],
-                                        'directive': 'rewrite_by_lua_block'
-                                    }
+                                        'directive': 'rewrite_by_lua_block',
+                                    },
                                 ],
-                                'directive': 'server'
+                                'directive': 'server',
                             },
                             {
                                 'line': 18,
@@ -375,17 +376,17 @@ def test_parse_lua_block_tricky():
                                         'comment': ' stuff',
                                         'line': 19,
                                         'args': [],
-                                        'directive': '#'
-                                    }
+                                        'directive': '#',
+                                    },
                                 ],
-                                'directive': 'upstream'
-                            }
+                                'directive': 'upstream',
+                            },
                         ],
-                        'directive': 'http'
-                    }
-                ]
-            }
-        ]
+                        'directive': 'http',
+                    },
+                ],
+            },
+        ],
     }
 
 

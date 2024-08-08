@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 import os
 
 import kobozo_crossplane as crossplane
+
 from . import here
 
 
@@ -34,9 +34,9 @@ def test_format_messy_config():
         '        }',
         '        location /bar {',
         '        }',
-        '        location /\{\;\}\ #\ ab {',
+        r'        location /\{\;\}\ #\ ab {',
         '        } # hello',
-        '        if ($request_method = P\{O\)\###\;ST) {',
+        r'        if ($request_method = P\{O\)\###\;ST) {',
         '        }',
         '        location /status.html {',
         "            try_files '/abc/${uri} /abc/${uri}.html' =404;",
@@ -50,7 +50,7 @@ def test_format_messy_config():
         '    }',
         '    server {',
         '    }',
-        '}'
+        '}',
     ])
 
 
@@ -62,7 +62,7 @@ def test_format_not_main_file():
         'server {',
         '    listen 8080;',
         '    include locations/*.conf;',
-        '}'
+        '}',
     ])
 
 
@@ -75,7 +75,7 @@ def test_format_args_not_analyzed():
         'events {',
         '}',
         'http {',
-        '}'
+        '}',
     ])
 
 
@@ -97,5 +97,5 @@ def test_format_with_comments():
         "            return 200 'foo bar baz';",
         '        }',
         '    }',
-        '}'
+        '}',
     ])

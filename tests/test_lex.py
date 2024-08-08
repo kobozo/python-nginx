@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 import os
 
 import kobozo_crossplane as crossplane
+
 from . import here
 
 
@@ -15,7 +15,7 @@ def test_simple_config():
         ('listen', 7), ('127.0.0.1:8080', 7), (';', 7), ('server_name', 8),
         ('default_server', 8), (';', 8), ('location', 9), ('/', 9), ('{', 9),
         ('return', 10), ('200', 10), ('foo bar baz', 10), (';', 10), ('}', 11),
-        ('}', 12), ('}', 13)
+        ('}', 12), ('}', 13),
     ]
 
 
@@ -30,7 +30,7 @@ def test_with_config_comments():
         (';', 7), ('#listen', 7), ('server_name', 8),
         ('default_server', 8),(';', 8), ('location', 9), ('/', 9),
         ('{', 9), ('## this is brace', 9), ('# location /', 10), ('return', 11), ('200', 11),
-        ('foo bar baz', 11), (';', 11), ('}', 12), ('}', 13), ('}', 14)
+        ('foo bar baz', 11), (';', 11), ('}', 12), ('}', 13), ('}', 14),
     ]
 
 
@@ -65,7 +65,7 @@ def test_messy_config():
         ('location', 23), ('/upstream_conf', 23), ('{', 23),
         ('return', 23), ('200', 23), ('/status.html', 23), (';', 23),
         ('}', 23), ('}', 23), ('server', 24), ('{', 25), ('}', 25),
-        ('}', 25)
+        ('}', 25),
     ]
 
 
@@ -90,5 +90,5 @@ def test_quoted_right_brace():
         '"request": "$request", ', '"uri": "$uri", ', '"args": "$args", ',
         '"https": "$https", ', '"request_method": "$request_method", ',
         '"referer": "$http_referer", ', '"agent": "$http_user_agent"', '}',
-        ';', '}'
+        ';', '}',
     ]

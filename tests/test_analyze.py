@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import kobozo_crossplane as crossplane
 
 
@@ -8,14 +7,14 @@ def test_state_directive():
     stmt = {
         'directive': 'state',
         'args': ['/path/to/state/file.conf'],
-        'line': 5  # this is arbitrary
+        'line': 5,  # this is arbitrary
     }
 
     # the state directive should not cause errors if it's in these contexts
     good_contexts = set([
         ('http', 'upstream'),
         ('stream', 'upstream'),
-        ('some_third_party_context',)
+        ('some_third_party_context',),
     ])
 
     for ctx in good_contexts:
@@ -39,7 +38,7 @@ def test_flag_directive_args():
     # an NGINX_CONF_FLAG directive
     stmt = {
         'directive': 'accept_mutex',
-        'line': 2  # this is arbitrary
+        'line': 2,  # this is arbitrary
     }
 
     good_args = [['on'], ['off'], ['On'], ['Off'], ['ON'], ['OFF']]

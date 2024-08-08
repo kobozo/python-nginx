@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 import os
 
 from kobozo_crossplane.common.compat import basestring
+from kobozo_crossplane.nginx_dumper import _enquote, build
 from kobozo_crossplane.nginx_parser import parse
-from kobozo_crossplane.nginx_dumper import build, _enquote
 
 here = os.path.dirname(__file__)
 

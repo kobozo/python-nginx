@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 import os
 
 import kobozo_crossplane as crossplane
+
 from . import here
 
 
@@ -15,8 +15,8 @@ def test_includes_regular():
             {
                 'file': os.path.join(dirname, 'conf.d', 'server.conf'),
                 'error': '[Errno 2] No such file or directory: %r' % os.path.join(dirname, 'bar.conf'),
-                'line': 5
-            }
+                'line': 5,
+            },
         ],
         'config': [
             {
@@ -28,7 +28,7 @@ def test_includes_regular():
                         'directive': 'events',
                         'line': 1,
                         'args': [],
-                        'block': []
+                        'block': [],
                     },
                     {
                         'directive': 'http',
@@ -39,11 +39,11 @@ def test_includes_regular():
                                 'directive': 'include',
                                 'line': 3,
                                 'args': ['conf.d/server.conf'],
-                                'includes': [1]
-                            }
-                        ]
-                    }
-                ]
+                                'includes': [1],
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 'file': os.path.join(dirname, 'conf.d', 'server.conf'),
@@ -51,8 +51,8 @@ def test_includes_regular():
                 'errors': [
                     {
                         'error': '[Errno 2] No such file or directory: %r' % os.path.join(dirname, 'bar.conf'),
-                        'line': 5
-                    }
+                        'line': 5,
+                    },
                 ],
                 'parsed': [
                     {
@@ -63,28 +63,28 @@ def test_includes_regular():
                             {
                                 'directive': 'listen',
                                 'line': 2,
-                                'args': ['127.0.0.1:8080']
+                                'args': ['127.0.0.1:8080'],
                             },
                             {
                                 'directive': 'server_name',
                                 'line': 3,
-                                'args': ['default_server']
+                                'args': ['default_server'],
                             },
                             {
                                 'directive': 'include',
                                 'line': 4,
                                 'args': ['foo.conf'],
-                                'includes': [2]
+                                'includes': [2],
                             },
                             {
                                 'directive': 'include',
                                 'line': 5,
                                 'args': ['bar.conf'],
-                                'includes': []
-                            }
-                        ]
-                    }
-                ]
+                                'includes': [],
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 'file': os.path.join(dirname, 'foo.conf'),
@@ -99,13 +99,13 @@ def test_includes_regular():
                             {
                                 'directive': 'return',
                                 'line': 2,
-                                'args': ['200', 'foo']
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                'args': ['200', 'foo'],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     }
 
 
@@ -126,15 +126,15 @@ def test_includes_globbed():
                         'directive': 'events',
                         'line': 1,
                         'args': [],
-                        'block': []
+                        'block': [],
                     },
                     {
                         'directive': 'include',
                         'line': 2,
                         'args': ['http.conf'],
-                        'includes': [1]
-                    }
-                ]
+                        'includes': [1],
+                    },
+                ],
             },
             {
                 'file': os.path.join(dirname, 'http.conf'),
@@ -150,11 +150,11 @@ def test_includes_globbed():
                                 'directive': 'include',
                                 'line': 2,
                                 'args': ['servers/*.conf'],
-                                'includes': [2, 3]
-                            }
-                        ]
-                    }
-                ]
+                                'includes': [2, 3],
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 'file': os.path.join(dirname, 'servers', 'server1.conf'),
@@ -169,17 +169,17 @@ def test_includes_globbed():
                             {
                                 'directive': 'listen',
                                 'args': ['8080'],
-                                'line': 2
+                                'line': 2,
                             },
                             {
                                 'directive': 'include',
                                 'args': ['locations/*.conf'],
                                 'line': 3,
-                                'includes': [4, 5]
-                            }
-                        ]
-                    }
-                ]
+                                'includes': [4, 5],
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 'file': os.path.join(dirname, 'servers', 'server2.conf'),
@@ -194,17 +194,17 @@ def test_includes_globbed():
                             {
                                 'directive': 'listen',
                                 'args': ['8081'],
-                                'line': 2
+                                'line': 2,
                             },
                             {
                                 'directive': 'include',
                                 'args': ['locations/*.conf'],
                                 'line': 3,
-                                'includes': [4, 5]
-                            }
-                        ]
-                    }
-                ]
+                                'includes': [4, 5],
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 'file': os.path.join(dirname, 'locations', 'location1.conf'),
@@ -219,11 +219,11 @@ def test_includes_globbed():
                             {
                                 'directive': 'return',
                                 'args': ['200', 'foo'],
-                                'line': 2
-                            }
-                        ]
-                    }
-                ]
+                                'line': 2,
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 'file': os.path.join(dirname, 'locations', 'location2.conf'),
@@ -238,13 +238,13 @@ def test_includes_globbed():
                             {
                                 'directive': 'return',
                                 'args': ['200', 'bar'],
-                                'line': 2
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                'line': 2,
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     }
 
 
@@ -266,7 +266,7 @@ def test_includes_globbed_combined():
                         "args": [],
                         "file": os.path.join(dirname, "nginx.conf"),
                         "line": 1,
-                        "block": []
+                        "block": [],
                     },
                     {
                         "directive": "http",
@@ -284,7 +284,7 @@ def test_includes_globbed_combined():
                                         "directive": "listen",
                                         "args": ["8080"],
                                         "file": os.path.join(dirname, "servers", "server1.conf"),
-                                        "line": 2
+                                        "line": 2,
                                     },
                                     {
                                         "directive": "location",
@@ -296,9 +296,9 @@ def test_includes_globbed_combined():
                                                 "directive": "return",
                                                 "args": ["200", "foo"],
                                                 "file": os.path.join(dirname, "locations", "location1.conf"),
-                                                "line": 2
-                                            }
-                                        ]
+                                                "line": 2,
+                                            },
+                                        ],
                                     },
                                     {
                                         "directive": "location",
@@ -310,11 +310,11 @@ def test_includes_globbed_combined():
                                                 "directive": "return",
                                                 "args": ["200", "bar"],
                                                 "file": os.path.join(dirname, "locations", "location2.conf"),
-                                                "line": 2
-                                            }
-                                        ]
-                                    }
-                                ]
+                                                "line": 2,
+                                            },
+                                        ],
+                                    },
+                                ],
                             },
                             {
                                 "directive": "server",
@@ -326,7 +326,7 @@ def test_includes_globbed_combined():
                                         "directive": "listen",
                                         "args": ["8081"],
                                         "file": os.path.join(dirname, "servers", "server2.conf"),
-                                        "line": 2
+                                        "line": 2,
                                     },
                                     {
                                         "directive": "location",
@@ -338,9 +338,9 @@ def test_includes_globbed_combined():
                                                 "directive": "return",
                                                 "args": ["200", "foo"],
                                                 "file": os.path.join(dirname, "locations", "location1.conf"),
-                                                "line": 2
-                                            }
-                                        ]
+                                                "line": 2,
+                                            },
+                                        ],
                                     },
                                     {
                                         "directive": "location",
@@ -352,17 +352,17 @@ def test_includes_globbed_combined():
                                                 "directive": "return",
                                                 "args": ["200", "bar"],
                                                 "file": os.path.join(dirname, "locations", "location2.conf"),
-                                                "line": 2
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                                "line": 2,
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     }
 
 
@@ -383,7 +383,7 @@ def test_includes_single():
                         'directive': 'events',
                         'line': 1,
                         'args': [],
-                        'block': []
+                        'block': [],
                     },
                     {
                         'directive': 'http',
@@ -393,15 +393,15 @@ def test_includes_single():
                             {
                                 'directive': 'include',
                                 'line': 3,
-                                'args': ['conf.d/server.conf']
+                                'args': ['conf.d/server.conf'],
                                 # no 'includes' key
-                            }
-                        ]
-                    }
-                ]
-            }
+                            },
+                        ],
+                    },
+                ],
+            },
             # single config parsed
-        ]
+        ],
     }
 
 
@@ -428,9 +428,9 @@ def test_ignore_directives():
                             {
                                 "directive": "worker_connections",
                                 "line": 2,
-                                "args": ["1024"]
-                            }
-                        ]
+                                "args": ["1024"],
+                            },
+                        ],
                     },
                     {
                         "directive": "http",
@@ -450,17 +450,17 @@ def test_ignore_directives():
                                             {
                                                 "directive": "return",
                                                 "line": 10,
-                                                "args": ["200", "foo bar baz"]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                                "args": ["200", "foo bar baz"],
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     }
 
     # check that you can also ignore block directives
@@ -478,11 +478,11 @@ def test_ignore_directives():
                         "directive": "http",
                         "line": 5,
                         "args": [],
-                        "block": []
-                    }
-                ]
-            }
-        ]
+                        "block": [],
+                    },
+                ],
+            },
+        ],
     }
 
 
@@ -502,20 +502,20 @@ def test_config_with_comments():
                       {
                          "directive" : "worker_connections",
                          "args" : [
-                            "1024"
+                            "1024",
                          ],
-                         "line" : 2
-                      }
+                         "line" : 2,
+                      },
                    ],
                    "line" : 1,
                    "args" : [],
-                   "directive" : "events"
+                   "directive" : "events",
                 },
                 {
                    "line" : 4,
                    "directive": "#",
                    "args": [],
-                   "comment" : "comment"
+                   "comment" : "comment",
                 },
                 {
                    "block" : [
@@ -526,23 +526,23 @@ def test_config_with_comments():
                          "block" : [
                             {
                                "args" : [
-                                  "127.0.0.1:8080"
+                                  "127.0.0.1:8080",
                                ],
                                "directive" : "listen",
-                               "line" : 7
+                               "line" : 7,
                             },
                             {
                                "args": [],
                                "directive": "#",
                                "comment" : "listen",
-                               "line" : 7
+                               "line" : 7,
                             },
                             {
                                "args" : [
-                                  "default_server"
+                                  "default_server",
                                ],
                                "directive" : "server_name",
-                               "line" : 8
+                               "line" : 8,
                             },
                             {
                                "block" : [
@@ -550,41 +550,41 @@ def test_config_with_comments():
                                      "args": [],
                                      "directive": "#",
                                      "line" : 9,
-                                     "comment" : "# this is brace"
+                                     "comment" : "# this is brace",
                                   },
                                   {
                                      "args": [],
                                      "directive": "#",
                                      "line" : 10,
-                                     "comment" : " location /"
+                                     "comment" : " location /",
                                   },
                                   {
                                      "line" : 11,
                                      "directive" : "return",
                                      "args" : [
                                         "200",
-                                        "foo bar baz"
-                                     ]
-                                  }
+                                        "foo bar baz",
+                                     ],
+                                  },
                                ],
                                "line" : 9,
                                "directive" : "location",
                                "args" : [
-                                  "/"
-                               ]
-                            }
-                         ]
-                      }
+                                  "/",
+                               ],
+                            },
+                         ],
+                      },
                    ],
                    "line" : 5,
                    "args" : [],
-                   "directive" : "http"
-                }
+                   "directive" : "http",
+                },
              ],
              "status" : "ok",
-             "file" : config
-          }
-       ]
+             "file" : config,
+          },
+       ],
     }
 
 
@@ -604,14 +604,14 @@ def test_config_without_comments():
                       {
                          "directive" : "worker_connections",
                          "args" : [
-                            "1024"
+                            "1024",
                          ],
-                         "line" : 2
-                      }
+                         "line" : 2,
+                      },
                    ],
                    "line" : 1,
                    "args" : [],
-                   "directive" : "events"
+                   "directive" : "events",
                 },
                 {
                    "block" : [
@@ -622,17 +622,17 @@ def test_config_without_comments():
                          "block" : [
                             {
                                "args" : [
-                                  "127.0.0.1:8080"
+                                  "127.0.0.1:8080",
                                ],
                                "directive" : "listen",
-                               "line" : 7
+                               "line" : 7,
                             },
                             {
                                "args" : [
-                                  "default_server"
+                                  "default_server",
                                ],
                                "directive" : "server_name",
-                               "line" : 8
+                               "line" : 8,
                             },
                             {
                                "block" : [
@@ -641,28 +641,28 @@ def test_config_without_comments():
                                      "directive" : "return",
                                      "args" : [
                                         "200",
-                                        "foo bar baz"
-                                     ]
-                                  }
+                                        "foo bar baz",
+                                     ],
+                                  },
                                ],
                                "line" : 9,
                                "directive" : "location",
                                "args" : [
-                                  "/"
-                               ]
-                            }
-                         ]
-                      }
+                                  "/",
+                               ],
+                            },
+                         ],
+                      },
                    ],
                    "line" : 5,
                    "args" : [],
-                   "directive" : "http"
-                }
+                   "directive" : "http",
+                },
              ],
              "status" : "ok",
-             "file" : os.path.join(dirname, 'nginx.conf')
-          }
-       ]
+             "file" : os.path.join(dirname, 'nginx.conf'),
+          },
+       ],
     }
 
 
@@ -676,8 +676,8 @@ def test_parse_strict():
             {
                 'file': os.path.join(dirname, 'nginx.conf'),
                 'error': 'unknown directive "proxy_passs" in %s:7' % os.path.join(dirname, 'nginx.conf'),
-                'line': 7
-            }
+                'line': 7,
+            },
         ],
         'config' : [
            {
@@ -686,15 +686,15 @@ def test_parse_strict():
               'errors' : [
                   {
                      'error': 'unknown directive "proxy_passs" in %s:7' % os.path.join(dirname, 'nginx.conf'),
-                     'line': 7
-                  }
+                     'line': 7,
+                  },
               ],
               'parsed' : [
                  {
                     'directive' : 'events',
                     'line' : 1,
                     'args' : [],
-                    'block' : []
+                    'block' : [],
                  },
                  {
                     'directive' : 'http',
@@ -715,17 +715,17 @@ def test_parse_strict():
                                        'directive' : '#',
                                        'line' : 6,
                                        'args' : [],
-                                       'comment': 'directive is misspelled'
-                                   }
-                                ]
-                             }
-                          ]
-                       }
-                    ]
-                 }
-              ]
-           }
-        ]
+                                       'comment': 'directive is misspelled',
+                                   },
+                                ],
+                             },
+                          ],
+                       },
+                    ],
+                 },
+              ],
+           },
+        ],
     }
 
 
@@ -740,9 +740,9 @@ def test_parse_missing_semicolon():
         "errors": [
             {
                 "file": above_config,
-                "error": "directive \"proxy_pass\" is not terminated by \";\" in %s:4" % above_config,
-                "line": 4
-            }
+                "error": 'directive "proxy_pass" is not terminated by ";" in %s:4' % above_config,
+                "line": 4,
+            },
         ],
         "config": [
             {
@@ -750,9 +750,9 @@ def test_parse_missing_semicolon():
                 "status": "failed",
                 "errors": [
                     {
-                        "error": "directive \"proxy_pass\" is not terminated by \";\" in %s:4" % above_config,
-                        "line": 4
-                    }
+                        "error": 'directive "proxy_pass" is not terminated by ";" in %s:4' % above_config,
+                        "line": 4,
+                    },
                 ],
                 "parsed": [
                     {
@@ -769,7 +769,7 @@ def test_parse_missing_semicolon():
                                         "directive": "location",
                                         "line": 3,
                                         "args": ["/is-broken"],
-                                        "block": []
+                                        "block": [],
                                     },
                                     {
                                         "directive": "location",
@@ -779,17 +779,17 @@ def test_parse_missing_semicolon():
                                             {
                                                 "directive": "proxy_pass",
                                                 "line": 7,
-                                                "args": ["http://not.broken.example"]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                                "args": ["http://not.broken.example"],
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     }
 
     # test correct error is raised when broken proxy_pass is in lower block
@@ -800,9 +800,9 @@ def test_parse_missing_semicolon():
         "errors": [
             {
                 "file": below_config,
-                "error": "directive \"proxy_pass\" is not terminated by \";\" in %s:7" % below_config,
-                "line": 7
-            }
+                "error": 'directive "proxy_pass" is not terminated by ";" in %s:7' % below_config,
+                "line": 7,
+            },
         ],
         "config": [
             {
@@ -810,9 +810,9 @@ def test_parse_missing_semicolon():
                 "status": "failed",
                 "errors": [
                     {
-                        "error": "directive \"proxy_pass\" is not terminated by \";\" in %s:7" % below_config,
-                        "line": 7
-                    }
+                        "error": 'directive "proxy_pass" is not terminated by ";" in %s:7' % below_config,
+                        "line": 7,
+                    },
                 ],
                 "parsed": [
                     {
@@ -833,23 +833,23 @@ def test_parse_missing_semicolon():
                                             {
                                                 "directive": "proxy_pass",
                                                 "line": 4,
-                                                "args": ["http://not.broken.example"]
-                                            }
-                                        ]
+                                                "args": ["http://not.broken.example"],
+                                            },
+                                        ],
                                     },
                                     {
                                         "directive": "location",
                                         "line": 6,
                                         "args": ["/is-broken"],
-                                        "block": []
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                        "block": [],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     }
 
 
@@ -865,9 +865,9 @@ def test_combine_parsed_missing_values():
                         "directive": "include",
                         "line": 1,
                         "args": ["example2.conf"],
-                        "includes": [1]
-                    }
-                ]
+                        "includes": [1],
+                    },
+                ],
             },
             {
                 "file": "example2.conf",
@@ -876,17 +876,17 @@ def test_combine_parsed_missing_values():
                         "directive": "events",
                         "line": 1,
                         "args": [],
-                        "block": []
+                        "block": [],
                     },
                     {
                         "directive": "http",
                         "line": 2,
                         "args": [],
-                        "block": []
-                    }
-                ]
-            }
-        ]
+                        "block": [],
+                    },
+                ],
+            },
+        ],
     }
     combined = crossplane.nginx_parser._combine_parsed_configs(separate)
     assert combined == {
@@ -902,17 +902,17 @@ def test_combine_parsed_missing_values():
                         "directive": "events",
                         "line": 1,
                         "args": [],
-                        "block": []
+                        "block": [],
                     },
                     {
                         "directive": "http",
                         "line": 2,
                         "args": [],
-                        "block": []
-                    }
-                ]
-            }
-        ]
+                        "block": [],
+                    },
+                ],
+            },
+        ],
     }
 
 
@@ -938,42 +938,42 @@ def test_comments_between_args():
                                 'directive': '#',
                                 'line': 1,
                                 'args': [],
-                                'comment': 'comment 1'
+                                'comment': 'comment 1',
                             },
                             {
                                 'directive': 'log_format',
                                 'line': 2,
-                                'args': ['\\#arg\\ 1', '#arg 2']
+                                'args': ['\\#arg\\ 1', '#arg 2'],
                             },
                             {
                                 'directive': '#',
                                 'line': 2,
                                 'args': [],
-                                'comment': 'comment 2'
+                                'comment': 'comment 2',
                             },
                             {
                                 'directive': '#',
                                 'line': 2,
                                 'args': [],
-                                'comment': 'comment 3'
+                                'comment': 'comment 3',
                             },
                             {
                                 'directive': '#',
                                 'line': 2,
                                 'args': [],
-                                'comment': 'comment 4'
+                                'comment': 'comment 4',
                             },
                             {
                                 'directive': '#',
                                 'line': 2,
                                 'args': [],
-                                'comment': 'comment 5'
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                'comment': 'comment 5',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     }
 
 def test_non_unicode():
@@ -1005,30 +1005,30 @@ def test_non_unicode():
                                         "directive": "location",
                                         "line": 3,
                                         "args": [
-                                            "/city"
+                                            "/city",
                                         ],
                                         "block": [
                                             {
                                                 "directive": "#",
                                                 "line": 4,
                                                 "args": [],
-                                                "comment": u" M\ufffdlln"
+                                                "comment": " M\ufffdlln",
                                             },
                                             {
                                                 "directive": "return",
                                                 "line": 5,
                                                 "args": [
                                                     "200",
-                                                    u"M\ufffdlln\\n"
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                                    "M\ufffdlln\\n",
+                                                ],
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     }
