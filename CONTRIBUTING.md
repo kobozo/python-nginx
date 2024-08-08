@@ -1,4 +1,4 @@
-# Contributing to the `kobozo-nginx` project
+# Contributing to the `kobozo-crossplane` project
 
 ## Filing a bug report
 
@@ -21,7 +21,7 @@ You may NOT suggest features through email to the core developers.
 
 ## Setting up your development environment
 
-Since `kobozo-nginx` has very little to do beyond programming and testing,
+Since `kobozo-crossplane` has very little to do beyond programming and testing,
 the following should be enough for 95% of all contributors:
 
 1. A working Git or GitHub Desktop installation
@@ -30,5 +30,5 @@ the following should be enough for 95% of all contributors:
 4. The following, non-standard PyPI modules (available through `pip`):
     - `poetry`
 
-[Issues]: https://github.com/Diapolo10/kobozo-nginx/issues
-[Projects]: https://github.com/Diapolo10/kobozo-nginx/projects
+[Issues]: https://github.com/kobozo/crossplane/issues
+[Projects]: https://github.com/kobozo/crossplane/projects

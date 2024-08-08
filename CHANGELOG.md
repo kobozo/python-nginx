@@ -1,5 +1,4 @@
-
-# kobozo-nginx Changelog
+# kobozo-crossplane Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -66,9 +65,9 @@ In-progress update goes here.
 
 _______________________________________________________________________________
 
-## [0.1.0] - YYYY-MM-DD
+## [0.1.0] - 2024-08-08
 
-This is the initial version of the project.
+This is the initial version of the project, based on the original repository of [crossplane](https://github.com/nginxinc/crossplane/tree/master) and converted to be compatible with a poetry project approach.
 
 ### Added
 
