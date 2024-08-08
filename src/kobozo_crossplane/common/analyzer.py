@@ -1,3 +1,12 @@
+"""
+Module for analyzing NGINX configuration directives.
+
+This module contains constants and functions for analyzing
+NGINX configuration directives, including the number of
+arguments they can take, the contexts in which they are
+allowed, and the behaviors they define.
+"""
+from __future__ import annotations
 
 from kobozo_crossplane.common.errors import (
     NgxParserDirectiveArgumentsError,
@@ -67,7 +76,7 @@ Each bit mask describes these behaviors:
 Since some directives can have different behaviors in different contexts, we
   use lists of bit masks, each describing a valid way to use the directive.
 
-Definitions for directives that're available in the open source version of 
+Definitions for directives that're available in the open source version of
   nginx were taken directively from the source code. In fact, the variable
   names for the bit masks defined above were taken from the nginx source code.
 
@@ -2110,25 +2119,75 @@ CONTEXTS = {
     ('http', 'location', 'limit_except'): NGX_HTTP_LMT_CONF,
 }
 
+NGX_CONF_2MORE_ARGS = 2
+NGX_CONF_1MORE_ARGS = 1
+NGX_CONF_ANY_ARGS = 0
+NGX_CONF_FLAG_ARGS = 1
+NGX_CONF_MAX_ARGS = 7
 
-def enter_block_ctx(stmt, ctx):
+def enter_block_ctx(stmt: dict, ctx: tuple) -> tuple:
+    """
+    Determine the context when entering a block directive.
+
+    Parameters
+    ----------
+    stmt : dict
+        The statement containing the directive.
+    ctx : tuple
+        The current context.
+
+    Returns
+    -------
+    tuple
+        The new context after entering the block.
+
+    """
     # don't nest because NGX_HTTP_LOC_CONF just means "location block in http"
     if ctx and ctx[0] == 'http' and stmt['directive'] == 'location':
         return ('http', 'location')
 
     # no other block contexts can be nested like location so just append it
-    return ctx + (stmt['directive'],)
+    return (*ctx, stmt['directive'])
 
 
-def analyze(fname, stmt, term, ctx=(), strict=False, check_ctx=True,
-        check_args=True):
+def analyze(fname: str, stmt: dict, term: str, ctx: tuple=(), strict: bool=False, check_ctx: bool=True, # noqa: C901
+        check_args: bool=True) -> None:
+    """
+    Analyze the given statement in the specified context.
 
+    Analyzes the provided statement `stmt` within the context `ctx` and checks
+    for validity based on various parameters. This function can operate in
+    strict mode and can perform additional context and argument checks.
+
+    Parameters
+    ----------
+    fname : str
+        The filename where the statement is located.
+    stmt : dict
+        The statement to be analyzed.
+    term : str
+        The terminating condition for the analysis.
+    ctx : tuple, optional
+        The context within which the statement is to be analyzed (default is ()).
+    strict : bool, optional
+        Flag to enable strict mode (default is False).
+    check_ctx : bool, optional
+        Flag to enable context checking (default is True).
+    check_args : bool, optional
+        Flag to enable argument checking (default is True).
+
+    Returns
+    -------
+    None
+        This function does not return any value.
+
+    """
     directive = stmt['directive']
     line = stmt['line']
 
     # if strict and directive isn't recognized then throw error
     if strict and directive not in DIRECTIVES:
-        reason = 'unknown directive "%s"' % directive
+        reason = f'unknown directive "{directive}"'
         raise NgxParserDirectiveUnknownError(reason, fname, line)
 
     # if we don't know where this directive is allowed and how
@@ -2145,7 +2204,7 @@ def analyze(fname, stmt, term, ctx=(), strict=False, check_ctx=True,
     if check_ctx:
         masks = [mask for mask in masks if mask & CONTEXTS[ctx]]
         if not masks:
-            reason = '"%s" directive is not allowed here' % directive
+            reason = f'"{directive}" directive is not allowed here'
             raise NgxParserDirectiveContextError(reason, fname, line)
 
     if not check_args:
@@ -2158,30 +2217,39 @@ def analyze(fname, stmt, term, ctx=(), strict=False, check_ctx=True,
     for mask in reversed(masks):
         # if the directive isn't a block but should be according to the mask
         if mask & NGX_CONF_BLOCK and term != '{':
-            reason = 'directive "%s" has no opening "{"'
+            reason = f'directive "{directive}" has no opening "{{"'
             continue
 
         # if the directive is a block but shouldn't be according to the mask
         if not mask & NGX_CONF_BLOCK and term != ';':
-            reason = 'directive "%s" is not terminated by ";"'
+            reason = f'directive "{directive}" is not terminated by ";"'
             continue
 
         # use mask to check the directive's arguments
-        if ((mask >> n_args & 1 and n_args <= 7) or  # NOARGS to TAKE7
-            (mask & NGX_CONF_FLAG and n_args == 1 and valid_flag(args[0])) or
-            (mask & NGX_CONF_ANY and n_args >= 0) or
-            (mask & NGX_CONF_1MORE and n_args >= 1) or
-            (mask & NGX_CONF_2MORE and n_args >= 2)):
+        if (
+            (mask >> n_args & 1 and n_args <= NGX_CONF_MAX_ARGS) or
+            (mask & NGX_CONF_FLAG and n_args == NGX_CONF_FLAG_ARGS and valid_flag(args[0])) or
+            (mask & NGX_CONF_ANY and n_args >= NGX_CONF_ANY_ARGS) or
+            (mask & NGX_CONF_1MORE and n_args >= NGX_CONF_1MORE_ARGS) or
+            (mask & NGX_CONF_2MORE and n_args >= NGX_CONF_2MORE_ARGS)
+        ):
             return
-        elif mask & NGX_CONF_FLAG and n_args == 1 and not valid_flag(args[0]):
-            reason = 'invalid value "%s" in "%%s" directive, it must be "on" or "off"' % args[0]
+
+        if mask & NGX_CONF_FLAG and n_args == 1 and not valid_flag(args[0]):
+            reason = f'invalid value "{args[0]}" in "{directive}" directive, it must be "on" or "off"'
         else:
-            reason = 'invalid number of arguments in "%s" directive'
+            reason = f'invalid number of arguments in "{directive}" directive'
 
-    raise NgxParserDirectiveArgumentsError(reason % directive, fname, line)
+    raise NgxParserDirectiveArgumentsError(reason, fname, line)
 
 
-def register_external_directives(directives):
-    for directive, bitmasks in directives.iteritems():
-        if bitmasks:
-            DIRECTIVES[directive] = bitmasks
+def register_external_directives(directives: dict[str, list[int]]) -> None:
+    """
+    Register external directives with their corresponding bitmasks.
+
+    Args:
+    ----
+        directives (Dict[str, List[int]]): A dictionary mapping directive names to lists of bitmasks.
+
+    """
+    DIRECTIVES.update({directive: bitmasks for directive, bitmasks in directives.items() if bitmasks})
