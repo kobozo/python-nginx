@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import codecs
 import os
 import re
@@ -41,9 +40,7 @@ def _needs_quotes(string):
 
     expanding = False
     for char in chars:
-        if char.isspace() or char in ('{', ';', '"', "'"):
-            return True
-        elif char == ('${' if expanding else '}'):
+        if char.isspace() or char in ('{', ';', '"', "'") or char == ('${' if expanding else '}'):
             return True
         elif char == ('}' if expanding else '${'):
             expanding = not expanding

@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 import functools
 import sys
 
 try:
     import simplejson as json
 except ImportError:
-    import json
+    pass
 
 PY2 = (sys.version_info[0] == 2)
 PY3 = (sys.version_info[0] == 3)

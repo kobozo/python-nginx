@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 import glob
 import os
 
-from kobozo_crossplane.helpers.lexer import lex
 from kobozo_crossplane.common.analyzer import analyze, enter_block_ctx
 from kobozo_crossplane.common.errors import NgxParserDirectiveError
+from kobozo_crossplane.helpers.lexer import lex
 
 # map of external / third-party directives to a parse function
 EXTERNAL_PARSERS = {}
@@ -97,13 +96,13 @@ def parse(filename, onerror=None, catch_errors=True, ignore=(), single=False,
                     'file': fname,
                     'directive': directive,
                     'line': lineno,
-                    'args': []
+                    'args': [],
                 }
             else:
                 stmt = {
                     'directive': directive,
                     'line': lineno,
-                    'args': []
+                    'args': [],
                 }
 
             # if token is comment
@@ -142,7 +141,7 @@ def parse(filename, onerror=None, catch_errors=True, ignore=(), single=False,
                 # raise errors if this statement is invalid
                 analyze(
                     fname=fname, stmt=stmt, term=token, ctx=ctx, strict=strict,
-                    check_ctx=check_ctx, check_args=check_args
+                    check_ctx=check_ctx, check_args=check_args,
                 )
             except NgxParserDirectiveError as e:
                 if catch_errors:
@@ -208,7 +207,7 @@ def parse(filename, onerror=None, catch_errors=True, ignore=(), single=False,
                     'directive': '#',
                     'line': stmt['line'],
                     'args': [],
-                    'comment': comment
+                    'comment': comment,
                 }
                 parsed.append(comment_stmt)
 
@@ -221,7 +220,7 @@ def parse(filename, onerror=None, catch_errors=True, ignore=(), single=False,
             'file': fname,
             'status': 'ok',
             'errors': [],
-            'parsed': []
+            'parsed': [],
         }
         try:
             parsing['parsed'] = _parse(parsing, tokens, ctx=ctx)
@@ -261,7 +260,7 @@ def _combine_parsed_configs(old_payload):
         'file': old_configs[0]['file'],
         'status': 'ok',
         'errors': [],
-        'parsed': []
+        'parsed': [],
     }
 
     for config in old_configs:
@@ -275,7 +274,7 @@ def _combine_parsed_configs(old_payload):
     combined_payload = {
         'status': old_payload.get('status', 'ok'),
         'errors': old_payload.get('errors', []),
-        'config': [combined_config]
+        'config': [combined_config],
     }
     return combined_payload
 

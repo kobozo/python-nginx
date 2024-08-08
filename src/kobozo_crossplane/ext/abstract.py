@@ -1,6 +1,6 @@
 from kobozo_crossplane.common.analyzer import register_external_directives
-from kobozo_crossplane.nginx_dumper import register_external_builder
 from kobozo_crossplane.helpers.lexer import register_external_lexer
+from kobozo_crossplane.nginx_dumper import register_external_builder
 from kobozo_crossplane.nginx_parser import register_external_parser
 
 

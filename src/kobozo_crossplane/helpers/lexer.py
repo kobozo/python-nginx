@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 import itertools
-import io
 
 from kobozo_crossplane.common.compat import fix_pep_479
 from kobozo_crossplane.common.errors import NgxParserSyntaxError
@@ -145,7 +143,7 @@ def _balance_braces(tokens, filename=None):
 
 def lex(filename):
     """Generates tokens from an nginx config file"""
-    with io.open(filename, mode='r', encoding='utf-8', errors='replace') as f:
+    with open(filename, encoding='utf-8', errors='replace') as f:
         it = _lex_file_object(f)
         it = _balance_braces(it, filename)
         for token, line, quoted in it:

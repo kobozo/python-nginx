@@ -1,17 +1,16 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-import io
 import os
 import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from traceback import format_exception
 
 from kobozo_crossplane import __version__
-from kobozo_crossplane.helpers.lexer import lex as lex_file
-from kobozo_crossplane.nginx_parser import parse as parse_file
-from kobozo_crossplane.nginx_dumper import build as build_string, build_files, _enquote, DELIMITERS
+from kobozo_crossplane.common.compat import input, json
 from kobozo_crossplane.common.formatter import format as format_file
-from kobozo_crossplane.common.compat import json, input
+from kobozo_crossplane.helpers.lexer import lex as lex_file
+from kobozo_crossplane.nginx_dumper import _enquote, build_files
+from kobozo_crossplane.nginx_dumper import build as build_string
+from kobozo_crossplane.nginx_parser import parse as parse_file
 
 
 def _prompt_yes():
@@ -25,7 +24,7 @@ def _dump_payload(obj, fp, indent):
     kwargs = {'indent': indent}
     if indent is None:
         kwargs['separators'] = ',', ':'
-    fp.write(json.dumps(obj, **kwargs) + u'\n')
+    fp.write(json.dumps(obj, **kwargs) + '\n')
 
 
 def parse(filename, out, indent=None, catch=None, tb_onerror=None, ignore='',
@@ -43,14 +42,14 @@ def parse(filename, out, indent=None, catch=None, tb_onerror=None, ignore='',
         'combine': combine,
         'single': single,
         'comments': comments,
-        'strict': strict
+        'strict': strict,
     }
 
     if tb_onerror:
         kwargs['onerror'] = callback
 
     payload = parse_file(filename, **kwargs)
-    o = sys.stdout if out is None else io.open(out, 'w', encoding='utf-8')
+    o = sys.stdout if out is None else open(out, 'w', encoding='utf-8')
     try:
         _dump_payload(payload, o, indent=indent)
     finally:
@@ -64,7 +63,7 @@ def build(filename, dirname=None, force=False, indent=4, tabs=False,
         dirname = os.getcwd()
 
     # read the json payload from the specified file
-    with open(filename, 'r') as fp:
+    with open(filename) as fp:
         payload = json.load(fp)
 
     # find which files from the json payload will overwrite existing files
@@ -78,7 +77,7 @@ def build(filename, dirname=None, force=False, indent=4, tabs=False,
                 existing.append(path)
         # ask the user if it's okay to overwrite existing files
         if existing:
-            print('building {} would overwrite these files:'.format(filename))
+            print(f'building {filename} would overwrite these files:')
             print('\n'.join(existing))
             if not _prompt_yes():
                 print('not overwritten')
@@ -114,7 +113,7 @@ def lex(filename, out, indent=None, line_numbers=False):
         payload = [(token, lineno) for token, lineno, quoted in payload]
     else:
         payload = [token for token, lineno, quoted in payload]
-    o = sys.stdout if out is None else io.open(out, 'w', encoding='utf-8')
+    o = sys.stdout if out is None else open(out, 'w', encoding='utf-8')
     try:
         _dump_payload(payload, o, indent=indent)
     finally:
@@ -129,34 +128,34 @@ def minify(filename, out):
         check_args=False,
         check_ctx=False,
         comments=False,
-        strict=False
+        strict=False,
     )
-    o = sys.stdout if out is None else io.open(out, 'w', encoding='utf-8')
+    o = sys.stdout if out is None else open(out, 'w', encoding='utf-8')
     def write_block(block):
         for stmt in block:
             o.write(_enquote(stmt['directive']))
             if stmt['directive'] == 'if':
-                o.write(u' (%s)' % ' '.join(map(_enquote, stmt['args'])))
+                o.write(' (%s)' % ' '.join(map(_enquote, stmt['args'])))
             else:
-                o.write(u' %s' % ' '.join(map(_enquote, stmt['args'])))
+                o.write(' %s' % ' '.join(map(_enquote, stmt['args'])))
             if 'block' in stmt:
-                o.write(u'{')
+                o.write('{')
                 write_block(stmt['block'])
-                o.write(u'}')
+                o.write('}')
             else:
-                o.write(u';')
+                o.write(';')
     try:
         write_block(payload['config'][0]['parsed'])
-        o.write(u'\n')
+        o.write('\n')
     finally:
         o.close()
 
 
 def format(filename, out, indent=4, tabs=False):
     output = format_file(filename, indent=indent, tabs=tabs)
-    o = sys.stdout if out is None else io.open(out, 'w', encoding='utf-8')
+    o = sys.stdout if out is None else open(out, 'w', encoding='utf-8')
     try:
-        o.write(output + u'\n')
+        o.write(output + '\n')
     finally:
         o.close()
 
@@ -179,7 +178,7 @@ def parse_args(args=None):
     parser = ArgumentParser(
         formatter_class=_SubparserHelpFormatter,
         description='various operations for nginx config files',
-        usage='%(prog)s <command> [options]'
+        usage='%(prog)s <command> [options]',
     )
     parser.add_argument('-V', '--version', action='version', version='%(prog)s ' + __version__)
     subparsers = parser.add_subparsers(title='commands')

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-from kobozo_crossplane.nginx_parser import parse
-from kobozo_crossplane.helpers.lexer import lex
-from kobozo_crossplane.nginx_dumper import build
 from kobozo_crossplane.common.formatter import format
 from kobozo_crossplane.ext.lua import LuaBlockPlugin
+from kobozo_crossplane.helpers.lexer import lex
+from kobozo_crossplane.nginx_dumper import build
+from kobozo_crossplane.nginx_parser import parse
 
 __all__ = ['parse', 'lex', 'build', 'format']
 
