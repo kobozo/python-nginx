@@ -1,5 +1,5 @@
 from kobozo_crossplane.common.compat import fix_pep_479
-from kobozo_crossplane.common.errors import NgxParserBaseException
+from kobozo_crossplane.common.errors import NgxParserBaseError
 from kobozo_crossplane.ext.abstract import CrossplaneExtension
 from kobozo_crossplane.helpers.lexer import register_external_lexer
 from kobozo_crossplane.nginx_dumper import register_external_builder
@@ -136,5 +136,5 @@ class LuaBlockPlugin(CrossplaneExtension):
         return built + ' {' + block + '}'
 
 
-class LuaBlockParserSyntaxError(NgxParserBaseException):
+class LuaBlockParserSyntaxError(NgxParserBaseError):
     pass
