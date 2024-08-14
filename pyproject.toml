@@ -53,7 +53,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.9"
 pyparsing = "^3.1.2"
-simplejson = "^3.19.2"
+simplejson = "^3.19.3"
 
 
 [tool.poetry.group.dev.dependencies]
