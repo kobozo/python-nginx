@@ -57,7 +57,7 @@ simplejson = "^3.19.3"
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^1.13.0"
+mypy = "^1.14.0"
 pre-commit = "^4.0.1"
 
 
